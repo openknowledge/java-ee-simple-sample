@@ -31,6 +31,15 @@ public class CustomerRepositoryTest {
         assertThat(customerRepository.findAll().size(), is(3));
     }
 
+
+    @Test
+    public void findAllWithLimit() throws Exception {
+        persistCustomers();
+        assertThat(customerRepository.findAll(0, 1).size(), is(1));
+        assertThat(customerRepository.findAll(1, 10).size(), is(2));
+        assertThat(customerRepository.findAll(10, 10).size(), is(0));
+    }
+
     @Test
     public void find() throws Exception {
         persistCustomers();

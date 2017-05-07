@@ -33,6 +33,14 @@ public class CustomerRepository {
                 .getResultList();
     }
 
+    public List<Customer> findAll(Integer from, Integer limit) {
+        return entityManager
+                .createQuery("SELECT c FROM Customer c", Customer.class)
+                .setFirstResult(from)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
     public Optional<Customer> find(Long id) {
         return Optional.ofNullable(entityManager.find(Customer.class, id));
     }

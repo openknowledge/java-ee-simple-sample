@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
@@ -17,9 +20,16 @@ public final class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Null //ensure that only JPA can created IDs (important when creating customers via the HTTP-API)
     private Long id;
+
+    @NotNull
+    @Size(min = 3, max = 100)
     @Column(name = "CUSTOMER_FISTNAME", nullable = false, length = 100)
     private String firstName;
+
+    @NotNull
+    @Size(min = 3, max = 100)
     @Column(name = "CUSTOMER_LASTNAME", nullable = false, length = 100)
     private String lastName;
 
@@ -36,7 +46,7 @@ public final class Customer {
         return firstName;
     }
 
-    protected void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = Objects.requireNonNull(firstName);
     }
 
@@ -44,7 +54,7 @@ public final class Customer {
         return lastName;
     }
 
-    protected void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = Objects.requireNonNull(lastName);
     }
 
