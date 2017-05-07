@@ -20,6 +20,13 @@ public class CustomerRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public CustomerRepository(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    protected CustomerRepository() {
+    }
+
     public List<Customer> findAll() {
         return entityManager
                 .createQuery("SELECT c FROM Customer c", Customer.class)
