@@ -5,6 +5,7 @@ import de.openknowledge.domain.customer.CustomerRepository;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,10 @@ public class CustomerBean {
     @Inject
     private CustomerRepository customerRepository;
 
+    @Inject
+    private Event<Customer> customerCreatedEvent;
+
+
     @NotNull
     @Size(min = 3, max = 100)
     private String firstName;
@@ -40,7 +45,11 @@ public class CustomerBean {
     }
 
     public String createCustomer() {
-        customerRepository.persist(new Customer(firstName, lastName));
+        Customer createdCustomer = customerRepository.persist(new Customer(firstName, lastName));
+
+        //send mail, sms, etc.
+        customerCreatedEvent.fire(createdCustomer);
+
         //this is to prevent double-form submissions (Post/Redirect/Get-Pattern).
         //got to https://en.wikipedia.org/wiki/Post/Redirect/Get for more information
         return CUSTOMERS_PAGE;
