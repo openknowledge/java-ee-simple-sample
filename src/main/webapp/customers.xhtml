@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <h:outputStylesheet library="style" name="bootstrap.min.css"/>
+</h:head>
+<h:body>
+    <f:view>
+        <h:panelGroup layout="block" styleClass="container page-header">
+            <h1>Java-EE-Simple-Sample
+                <small>Customer care</small>
+            </h1>
+        </h:panelGroup>
+
+
+        <h:form id="createCustomer" styleClass="container">
+            <h:panelGroup styleClass="panel panel-primary" layout="block">
+                <h:panelGroup styleClass="panel-heading" layout="block"><h:outputText value="Create a new customer"/></h:panelGroup>
+                <h:panelGroup styleClass="panel-body" layout="block">
+
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="firstName" value="First name:"/>
+                        <h:inputText id="firstName" value="#{customerBean.firstName}" styleClass="form-control"/>
+                        <h:panelGroup layout="block">
+                            <h:message for="firstName" errorClass="help-inline alert-danger"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="lastName" value="Last name:"/>
+                        <h:inputText id="lastName" value="#{customerBean.lastName}" styleClass="form-control"/>
+                        <h:message for="lastName" errorClass="help-inline alert-danger"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:commandButton styleClass="btn btn-primary" value="Create customer" action="#{customerBean.createCustomer}"/>
+                    </h:panelGroup>
+
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:form>
+
+        <h:form id="customerTable" styleClass="container">
+            <h:panelGroup styleClass="panel panel-info" layout="block">
+                <h:panelGroup styleClass="panel-heading" layout="block"><h:outputText value="All customers"/></h:panelGroup>
+                <h:panelGroup styleClass="panel-body" layout="block">
+
+                    <h:dataTable value="#{customerBean.customers}" var="customer" styleClass="table table-bordered table-hover">
+                        <h:column>
+                            <f:facet name="header">Customer #</f:facet>
+                            <h:outputLabel value="#{customer.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">First name</f:facet>
+                            <h:outputLabel value="#{customer.firstName}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Last name</f:facet>
+                            <h:outputLabel value="#{customer.lastName}"/>
+                        </h:column>
+                        <h:column>
+                            <h:commandButton styleClass="btn btn-danger btn-xs" value="-" action="#{customerBean.deleteCustomer(customer)}">
+                                <f:ajax execute="@this" render="customerTable"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
+
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:form>
+    </f:view>
+
+    <!-- ajax loader-->
+    <h:panelGroup layout="block" id="loader"><h:graphicImage library="img" name="ajax-loader.gif"/></h:panelGroup>
+    <h:outputScript target="body" library="scripts" name="index.js"/>
+</h:body>
+</html>
